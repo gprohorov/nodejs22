@@ -1,0 +1,17 @@
+[
+  {
+    "id": "1",
+    "name": "John",
+    "description": "guitar"
+  },
+  {
+    "id": "2",
+    "name": "Paul",
+    "description": "piano"
+  },
+  {
+    "id": "3",
+    "name": "Ringo",
+    "description": "drums"
+  }
+]
