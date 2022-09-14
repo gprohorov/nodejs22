@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 [
   {"id":"1","name":"Ajay","description":"Robust bottom-line policy"},
@@ -9,4 +10,22 @@
   {"id":"7","name":"Sterling","description":"Up-sized methodical neural-net"},
   {"id":"8","name":"Marnia","description":"Multi-lateral actuating encoding"},
   {"id":"9","name":"Katusha","description":"Phased human-resource data-warehouse"}
+=======
+[
+  {
+    "id": "1",
+    "name": "John",
+    "description": "guitar"
+  },
+  {
+    "id": "2",
+    "name": "Paul",
+    "description": "piano"
+  },
+  {
+    "id": "3",
+    "name": "Ringo",
+    "description": "drums"
+  }
+>>>>>>> origin/2-routes
 ]
