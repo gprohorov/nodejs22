@@ -1,10 +1,29 @@
 import express from 'express';
 import items from '../data/items.json';
 import _ from 'lodash';
+import mongoose from 'mongoose';
+
+const DB_URL = `mongodb://localhost:27017/nodejs22`;
+const DB_USER = '';
+const DB_password = '';
 
 const router = express.Router();
 
 let itemsArray = items;
+
+mongoose.connect(DB_URL);
+const db = mongoose.connection;
+db.once('open', () => {
+   console.log('DB connection is established');
+});
+
+const ItemSchema = mongoose.Schema({
+    _id: mongoose.Schema.Types.ObjectId,
+    name: String,
+    description: String
+});
+
+const ItemModel = mongoose.model('Item', ItemSchema);
 
 router.get('/', (req, res) =>{
     //
@@ -14,9 +33,24 @@ router.get('/', (req, res) =>{
 });
 
 router.post('/', (req, res) => {
-    itemsArray.push(req.body);
-    res.status(200).send("OK");
-})
+ //   itemsArray.push(req.body);
+ //   res.status(200).send("OK");
+    const id = mongoose.Types.ObjectId();
+    const itemToPersist = Object.assign({
+        _id: id
+    }, req.body
+    );
+    const item = new ItemModel(itemToPersist);
+
+    item.save( error => {
+        if(error){
+            res.status(500).send(error);
+            return handleError(error);
+        }
+        res.json(item);
+        }
+    );
+});
 
 router.get('/:id', (req, res) =>{
     const id = req.params.id;
