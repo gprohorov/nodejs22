@@ -26,15 +26,17 @@ const ItemSchema = mongoose.Schema({
 const ItemModel = mongoose.model('Item', ItemSchema);
 
 router.get('/', (req, res) =>{
-    //
-    // middleware
-    //
-    res.json(itemsArray);
+    ItemModel.find((error, items) => {
+     if(error){
+         res.status(500).send(error);
+         return handleError(error);
+     }
+     res.json(items);
+    });
 });
 
 router.post('/', (req, res) => {
- //   itemsArray.push(req.body);
- //   res.status(200).send("OK");
+
     const id = mongoose.Types.ObjectId();
     const itemToPersist = Object.assign({
         _id: id
@@ -54,14 +56,56 @@ router.post('/', (req, res) => {
 
 router.get('/:id', (req, res) =>{
     const id = req.params.id;
-    const item = _.find(items, item => item.id === id);
-    if (item) {
-        res.json(item);
-    }else {
-        console.log('not found');
-        res.send('NOT FOUND');
-    }
+    ItemModel.findById(id, (error, item) => {
+        if (error){
+            res.status(500).send(error);
+            return errorHandler(error);
+        }
+        if(item){
+            res.json(item);
+        } else {
+            res.status(404).send('Item with such id NOT FOUND');
+        }
+    });
 });
+
+router.delete('/:id', (req, res) =>{
+    const id = req.params.id;
+    ItemModel.findByIdAndDelete(id, (error, item) => {
+        if(error){
+            res.status(500).send(error);
+            return handleError(error);
+        }
+        res.status(200).send('Item is DELETED!');
+    });
+});
+
+router.put('/:id', (req, res)=>{
+    const id = req.params.id;
+    ItemModel.findById(id, (error, item) => {
+        if (error){
+            res.status(500).send(error);
+            return handleError(error);
+        }
+        if(item){
+            item.name = req.body.name;
+            item.description = req.body.description;
+            item.save( error => {
+                    if(error){
+                        res.status(500).send(error);
+                        return handleError(error);
+                    }
+                    res.json(item);
+                }
+            );
+        }
+    });
+});
+
+function errorHandler(err, req, res, next){
+    res.status(500);
+    res.render('error',{error: err});
+}
 
 module.exports = router;
 /*
