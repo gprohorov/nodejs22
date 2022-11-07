@@ -15,6 +15,7 @@ server.use(morgan('tiny'));
 server.use(bodyParser.json());
 server.set('views', path.join('views'));
 server.set('view engine', 'ejs');
+server.use(errorHandler);
 
 server.use(BASE_ITEMS_URL, ItemRoute);
 server.get('/', (req, res) => {
