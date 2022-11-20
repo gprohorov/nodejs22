@@ -3,9 +3,10 @@ import items from '../data/items.json';
 import _ from 'lodash';
 import mongoose from 'mongoose';
 
-const DB_URL = `mongodb://localhost:27017/nodejs22`;
-const DB_USER = '';
-const DB_password = '';
+
+const DB_USER = 'root';
+const DB_password = 'root';
+const DB_URL = `mongodb://localhost:27018/nodejs22`;
 
 const router = express.Router();
 
@@ -47,7 +48,7 @@ router.post('/', (req, res) => {
     item.save( error => {
         if(error){
             res.status(500).send(error);
-            return handleError(error);
+            return errorHandler(error);
         }
         res.json(item);
         }
@@ -74,7 +75,7 @@ router.delete('/:id', (req, res) =>{
     ItemModel.findByIdAndDelete(id, (error, item) => {
         if(error){
             res.status(500).send(error);
-            return handleError(error);
+            return handleError(error, res);
         }
         res.status(200).send('Item is DELETED!');
     });
@@ -102,9 +103,10 @@ router.put('/:id', (req, res)=>{
     });
 });
 
-function errorHandler(err, req, res, next){
-    res.status(500);
-    res.render('error',{error: err});
+function errorHandler(err,  res ){
+   // res.status(500);
+   // res.render('error',{error: err});
+    console.log(err);
 }
 
 module.exports = router;
