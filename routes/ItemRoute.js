@@ -3,7 +3,7 @@ import items from '../data/items.json';
 import _ from 'lodash';
 import mongoose from 'mongoose';
 
-const DB_URL = `mongodb://localhost:27018/nodejs22`;
+const DB_URL = `mongodb://mongodb:27017/nodejs22`;
 const DB_USER = '';
 const DB_password = '';
 
@@ -47,7 +47,7 @@ router.post('/', (req, res) => {
     item.save( error => {
         if(error){
             res.status(500).send(error);
-            return handleError(error);
+            console.log(error);
         }
         res.json(item);
         }
@@ -102,7 +102,7 @@ router.put('/:id', (req, res)=>{
     });
 });
 
-function errorHandler(err, req, res, next){
+function handleError(err, req, res, next){
     res.status(500);
     res.render('error',{error: err});
 }
